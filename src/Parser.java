@@ -267,7 +267,7 @@ public class Parser {
         return total;
     }
     
-    public static String[] getDataAndTime(String S) {
+    private static String[] getDataAndTime(String S) {
         
         String result[] = new String[2];
         
@@ -299,7 +299,7 @@ public class Parser {
         return result;
     }
     
-    public static String printReceiptsData(ArrayList<ArrayList<String>> receipts) {
+    private static String printReceiptsData(ArrayList<ArrayList<String>> receipts) {
         
         String result = "";
         
@@ -328,7 +328,7 @@ public class Parser {
         
     }
     
-    public static void searchCodeInReceipts(ArrayList<ArrayList<String>> receipts, String code) {
+    private static void searchCodeInReceipts(ArrayList<ArrayList<String>> receipts, String code) {
         
     }
 }
