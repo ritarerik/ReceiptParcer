@@ -16,22 +16,23 @@ import java.util.regex.Pattern;
  */
 public class ReceiptProcessor {
     
+    private static String desiredCode = "";                                     // искомый код
+//    private static ArrayList<String> ReceiptNumbers = new ArrayList<>();        // номера чеков, где есть искомый товар
+    private static boolean codeEqual = false;                                   // флаг совпадения кодов
+    
     // возвращает строку, где сформированы данные по чекам без лишней информации
     // и запускает поиск продукции с нужным кодом в чеках 
     public static String start(ArrayList<String> receiptStringsArray, String code) {
         
+        desiredCode = code;
         String result = "";
         
         // приводим строки к нижнему регистру
         for (int i = 0; i < receiptStringsArray.size(); i++) receiptStringsArray.set(i, receiptStringsArray.get(i).toLowerCase());        
         
-        // выделяем нужную информацию по чекам
+        // выделяем нужную информацию по чекам и ищем нужный код
         ArrayList<ArrayList<String>>receipts = parse(receiptStringsArray);
-        
-        // ищем продукцию с нужным кодом в чеках 
-        // и выводим полученные данные в Excel
-        searchCodeInReceipts(receipts, code);
-        
+                
         return printReceiptsData(receipts);    
            
     }
@@ -53,7 +54,7 @@ public class ReceiptProcessor {
                 case 0 : { 
                     
                     // пытаемся получить номер чека из строки
-                    String num = getRecNumber(S);
+                    String num = getReceiptNumber(S);
                     
                     if (!num.equals("NON")) {
                         
@@ -105,13 +106,18 @@ public class ReceiptProcessor {
                 // обработка даты и времени, запись чека в массив
                 case 3 : {
                     
-                    String dataAndTime[] = getDataAndTime(S);
-                    list.add(dataAndTime[0]);
-                    list.add(dataAndTime[1]);
+                    if (codeEqual) {
+                        String dataAndTime[] = getDataAndTime(S);
+                        list.add(dataAndTime[0]);
+                        list.add(dataAndTime[1]);
+
+                        ArrayList<String> listCopy = new ArrayList<>();
+                        for (String s : list) listCopy.add(s);                    
+                        receipts.add(listCopy);
+                        
+                        codeEqual = false;
+                    }
                     
-                    ArrayList<String> listCopy = new ArrayList<>();
-                    for (String s : list) listCopy.add(s);                    
-                    receipts.add(listCopy);
                     stage = 0;
                     break;
                 }
@@ -128,7 +134,7 @@ public class ReceiptProcessor {
     // возвращает номер чека:
     // если строка соответсвует формату, то будет возвращён номер, 
     // иначе значение "NON"
-    private static String getRecNumber(String S) {
+    private static String getReceiptNumber(String S) {
         
         String res = "";        
         S = S.replaceAll(" ", "");
@@ -206,7 +212,8 @@ public class ReceiptProcessor {
                     if (c == '(') a = i + 1;
                     else if (c == ')') {
                         b = i;
-                        code = codeAndProduct.substring(a, b);
+                        code = codeAndProduct.substring(a, b);                        
+                        if (code.equals(desiredCode)) codeEqual = true;
                         stage++;
                     }
 
@@ -328,64 +335,5 @@ public class ReceiptProcessor {
         return result;       
         
     }
-    
-    private static void searchCodeInReceipts(ArrayList<ArrayList<String>> receipts, String code) {
-        
-        for (ArrayList<String> receipt : receipts) 
-            for (int i = 1; i < receipt.size() - 3; i++) {
-                
-                String receiptLine = receipt.get(i);
-                int index = receiptLine.indexOf('|');
-                String recCode = receiptLine.substring(0, index);
-                if (recCode.equals(code)) {
-//                    res += receipt.get(0) + "\n";
 
-                    int count = 0;
-                    StringTokenizer st = new StringTokenizer(receiptLine, "|");
-                    while (st.hasMoreTokens()) {
-                        
-                        switch (count) {
-                            
-                            case 0: {
-                                
-                                
-                                break;
-                            }
-                            
-                            case 1: {
-                                
-                                
-                                break;
-                            }
-                            
-                            case 2: {
-                                
-                                
-                                break;
-                            }
-                            
-                            
-                        }
-                        
-                        
-                        count++;
-                        
-                    }
-
-
-
-
-                    break;
-                }
-                
-            }
-        
-        
-        
-        
-        
-        
-        
-        
-    }
 }

@@ -20,7 +20,7 @@ import javax.swing.JOptionPane;
  */
 public class GUI extends javax.swing.JFrame {
     
-    private static ArrayList<String> recceptStringsArray = new ArrayList<>();
+    private static ArrayList<String> receiptStringsArray = new ArrayList<>();
     
     /**
      * Creates new form GUI
@@ -173,10 +173,10 @@ public class GUI extends javax.swing.JFrame {
             try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file.getAbsolutePath()), "UTF-8"));
 
-                recceptStringsArray.clear();
+                receiptStringsArray.clear();
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    if (!line.isEmpty()) recceptStringsArray.add(line);
+                    if (!line.isEmpty()) receiptStringsArray.add(line);
                 }            
 
                 reader.close();
@@ -191,10 +191,10 @@ public class GUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        if (recceptStringsArray.isEmpty() || textAreaCode.getText().isEmpty()) {
+        if (receiptStringsArray.isEmpty() || textAreaCode.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Пожалуйста, заполните все поля");
         } else {
-            textAreaReceipt.setText(ReceiptProcessor.start(recceptStringsArray, textAreaCode.getText()));
+            textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCode.getText()));
 //            recceptStringsArray.clear();
 //            this.setTitle("Receipt Parser");
         }     
