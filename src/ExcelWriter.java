@@ -144,7 +144,7 @@ public class ExcelWriter {
             File file = new File(path);
             Desktop.getDesktop().open(file);
             
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Не удалось записать файл", "Ошибка", JOptionPane.ERROR_MESSAGE);
         }
         
