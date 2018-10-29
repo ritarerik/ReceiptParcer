@@ -4,6 +4,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -18,21 +19,22 @@ public class ReceiptProcessor {
     
     private static String desiredCode = "";                                     // искомый код
     private static boolean codeEqual = false;                                   // флаг совпадения кодов
+    private static ArrayList<ArrayList<String>> receipts = new ArrayList<>();   // массив чеков
     
     // возвращает строку, где сформированы данные по чекам без лишней информации
     // и запускает поиск продукции с нужным кодом в чеках 
-    public static String start(ArrayList<String> receiptStringsArray, String code) {
+    public static String start(ArrayList<String> receiptStringsArray, String code, String path) {
         
         desiredCode = code;
-        String result = "";
         
         // приводим строки к нижнему регистру
         for (int i = 0; i < receiptStringsArray.size(); i++) receiptStringsArray.set(i, receiptStringsArray.get(i).toLowerCase());        
         
         // выделяем нужную информацию по чекам и ищем нужный код
-        ArrayList<ArrayList<String>>receipts = parse(receiptStringsArray);
-                
-        return printReceiptsData(receipts);    
+        receipts = parse(receiptStringsArray);
+        ExcelWriter.write(receipts, path);
+        
+        return printReceiptsData();    
            
     }
     
@@ -234,7 +236,7 @@ public class ReceiptProcessor {
             if (end) break; 
         }
         
-        return code + "|" + product + "|" + sum;      
+        return code + "|" + product + "|" + sum; 
         
     }
     
@@ -292,8 +294,7 @@ public class ReceiptProcessor {
     
     private static String[] divideString(String S) {
         
-        String result[] = new String[3];
-        
+        String result[] = new String[3];        
         int index = 0;
             StringTokenizer st = new StringTokenizer(S, "|");
             while (st.hasMoreTokens()) {                
@@ -306,7 +307,7 @@ public class ReceiptProcessor {
         return result;
     }
     
-    private static String printReceiptsData(ArrayList<ArrayList<String>> receipts) {
+    private static String printReceiptsData() {
         
         String result = "";
         
@@ -334,5 +335,5 @@ public class ReceiptProcessor {
         return result;       
         
     }
-
+    
 }
