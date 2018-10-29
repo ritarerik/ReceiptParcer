@@ -47,7 +47,7 @@ public class GUI extends javax.swing.JFrame {
         textAreaReceipt = new javax.swing.JTextArea();
         open = new javax.swing.JButton();
         SaveAs = new javax.swing.JButton();
-        path = new javax.swing.JTextField();
+        textAreaPath = new javax.swing.JTextField();
         jSeparator2 = new javax.swing.JSeparator();
         jMenuBar1 = new javax.swing.JMenuBar();
         mainMenu = new javax.swing.JMenu();
@@ -55,6 +55,8 @@ public class GUI extends javax.swing.JFrame {
         mSaveAs = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mExit = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Receipt Parser");
@@ -65,14 +67,14 @@ public class GUI extends javax.swing.JFrame {
         textAreaCode.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
 
         jButton1.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 14)); // NOI18N
-        jButton1.setText("Ok");
+        jButton1.setText("ОК");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jLabel2.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
         jLabel2.setText("   ");
         jLabel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -84,13 +86,23 @@ public class GUI extends javax.swing.JFrame {
 
         open.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
         open.setText("Открыть...");
+        open.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mOpenActionPerformed(evt);
+            }
+        });
 
         SaveAs.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
         SaveAs.setText("Сохранить как...");
+        SaveAs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mSaveAsActionPerformed(evt);
+            }
+        });
 
-        path.setEditable(false);
-        path.setBackground(new java.awt.Color(255, 255, 255));
-        path.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
+        textAreaPath.setEditable(false);
+        textAreaPath.setBackground(new java.awt.Color(255, 255, 255));
+        textAreaPath.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
 
         mainMenu.setText("Файл");
         mainMenu.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
@@ -109,6 +121,11 @@ public class GUI extends javax.swing.JFrame {
         mSaveAs.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
         mSaveAs.setText("Сохранить как...");
         mSaveAs.setToolTipText("");
+        mSaveAs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mSaveAsActionPerformed(evt);
+            }
+        });
         mainMenu.add(mSaveAs);
         mainMenu.add(jSeparator1);
 
@@ -124,30 +141,46 @@ public class GUI extends javax.swing.JFrame {
 
         jMenuBar1.add(mainMenu);
 
+        jMenu1.setText("Правка");
+        jMenu1.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
+
+        jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_DELETE, 0));
+        jMenuItem1.setFont(new java.awt.Font("Microsoft YaHei UI Light", 0, 14)); // NOI18N
+        jMenuItem1.setText("Очистить");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu1);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 831, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator2)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(textAreaCode)
+                        .addComponent(textAreaCode, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(open)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(SaveAs)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(path)))
+                        .addComponent(textAreaPath)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -157,7 +190,7 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(open)
                     .addComponent(SaveAs)
-                    .addComponent(path, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textAreaPath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -166,7 +199,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(textAreaCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabel2))
         );
@@ -181,7 +214,7 @@ public class GUI extends javax.swing.JFrame {
     private void mOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mOpenActionPerformed
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
         fileChooser.setFileFilter(new CustomFilter());
-        fileChooser.setDialogTitle("Открыть файл");
+        fileChooser.setDialogTitle("Открыть");
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             
@@ -198,7 +231,7 @@ public class GUI extends javax.swing.JFrame {
 
                 reader.close();
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ошибка при открытии файла");
+                JOptionPane.showMessageDialog(null, "Ошибка при открытии файла", "Ошибка", JOptionPane.ERROR_MESSAGE);
             }
             
             this.setTitle("Receipt Parser - [" + file.getAbsolutePath() + "]");
@@ -208,15 +241,42 @@ public class GUI extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        if (receiptStringsArray.isEmpty() || textAreaCode.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Пожалуйста, заполните все поля");
-        } else {
-            textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCode.getText(), "poi-generated-file.xls"));
-//            recceptStringsArray.clear();
-//            this.setTitle("Receipt Parser");
-        }     
+        boolean numeric = true;
+        try {
+            Integer.parseInt(textAreaCode.getText());
+        } catch (Exception ex) {
+            numeric = false;
+        }
+        
+        if (receiptStringsArray.isEmpty() && textAreaCode.getText().isEmpty() && textAreaPath.getText().isEmpty())
+            JOptionPane.showMessageDialog(null, "Пожалуйста, заполните все поля!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+        else if (!numeric) JOptionPane.showMessageDialog(null, "Код должен являться числом!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+        else textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCode.getText(), textAreaPath.getText())); 
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void mSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mSaveAsActionPerformed
+        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        fileChooser.setFileFilter(new CustomFilterXLS());
+        fileChooser.setDialogTitle("Сохранение");
+        int returnVal = fileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            
+            File file = fileChooser.getSelectedFile();
+            textAreaPath.setText(file.getPath());
+            
+        }
+    }//GEN-LAST:event_mSaveAsActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        
+        this.setTitle("Receipt Parser");
+        textAreaPath.setText("");
+        textAreaCode.setText("");
+        textAreaReceipt.setText("");
+        receiptStringsArray.clear();
+        
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -259,7 +319,9 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -268,8 +330,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem mSaveAs;
     private javax.swing.JMenu mainMenu;
     private javax.swing.JButton open;
-    private javax.swing.JTextField path;
     private javax.swing.JTextField textAreaCode;
+    private javax.swing.JTextField textAreaPath;
     private javax.swing.JTextArea textAreaReceipt;
     // End of variables declaration//GEN-END:variables
 }
