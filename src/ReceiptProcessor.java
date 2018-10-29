@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 public class ReceiptProcessor {
     
     private static String desiredCode = "";                                     // искомый код
-//    private static ArrayList<String> ReceiptNumbers = new ArrayList<>();        // номера чеков, где есть искомый товар
     private static boolean codeEqual = false;                                   // флаг совпадения кодов
     
     // возвращает строку, где сформированы данные по чекам без лишней информации
