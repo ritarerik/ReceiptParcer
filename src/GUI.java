@@ -67,12 +67,12 @@ public class GUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Receipt Parser");
 
-        jLabel1.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
         jLabel1.setText("Код:");
 
-        textAreaCode.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
+        textAreaCode.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
 
-        btnOK.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 14)); // NOI18N
+        btnOK.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
         btnOK.setText("ОК");
         btnOK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -203,9 +203,9 @@ public class GUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(textAreaCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 625, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabel2))
         );
@@ -254,10 +254,10 @@ public class GUI extends javax.swing.JFrame {
             numeric = false;
         }
         
-        if (receiptStringsArray.isEmpty() && textAreaCode.getText().isEmpty() && textAreaPath.getText().isEmpty())
-            JOptionPane.showMessageDialog(null, "Пожалуйста, заполните все поля!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+        if (receiptStringsArray.isEmpty() || textAreaCode.getText().isEmpty() || textAreaPath.getText().isEmpty())
+            JOptionPane.showMessageDialog(null, "Пожалуйста, введите все данные", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else if (!numeric) 
-            JOptionPane.showMessageDialog(null, "Код должен являться числом!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Код должен являться числом", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else 
             textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCode.getText(), textAreaPath.getText())); 
         
