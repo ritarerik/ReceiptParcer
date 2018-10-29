@@ -194,7 +194,7 @@ public class GUI extends javax.swing.JFrame {
         if (recceptStringsArray.isEmpty() || textAreaCode.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Пожалуйста, заполните все поля");
         } else {
-            textAreaReceipt.setText(Parser.start(recceptStringsArray, textAreaCode.getText()));
+            textAreaReceipt.setText(ReceiptProcessor.start(recceptStringsArray, textAreaCode.getText()));
 //            recceptStringsArray.clear();
 //            this.setTitle("Receipt Parser");
         }     
