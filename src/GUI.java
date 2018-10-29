@@ -58,6 +58,12 @@ public class GUI extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
 
+        fileChooser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fileChooserActionPerformed(evt);
+            }
+        });
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Receipt Parser");
 
@@ -162,7 +168,7 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 749, Short.MAX_VALUE)
             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -199,7 +205,7 @@ public class GUI extends javax.swing.JFrame {
                     .addComponent(textAreaCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabel2))
         );
@@ -250,21 +256,23 @@ public class GUI extends javax.swing.JFrame {
         
         if (receiptStringsArray.isEmpty() && textAreaCode.getText().isEmpty() && textAreaPath.getText().isEmpty())
             JOptionPane.showMessageDialog(null, "Пожалуйста, заполните все поля!", "Ошибка", JOptionPane.ERROR_MESSAGE);
-        else if (!numeric) JOptionPane.showMessageDialog(null, "Код должен являться числом!", "Ошибка", JOptionPane.ERROR_MESSAGE);
-        else textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCode.getText(), textAreaPath.getText())); 
+        else if (!numeric) 
+            JOptionPane.showMessageDialog(null, "Код должен являться числом!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+        else 
+            textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCode.getText(), textAreaPath.getText())); 
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void mSaveAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mSaveAsActionPerformed
-        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG); 
         fileChooser.setFileFilter(new CustomFilterXLS());
         fileChooser.setDialogTitle("Сохранение");
         int returnVal = fileChooser.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            
-            File file = fileChooser.getSelectedFile();
-            textAreaPath.setText(file.getPath());
-            
+        if (returnVal == JFileChooser.APPROVE_OPTION) {            
+            File file = fileChooser.getSelectedFile();            
+            String path = file.getPath();
+            if (!path.endsWith(".xls")) path += ".xls";            
+            textAreaPath.setText(path);            
         }
     }//GEN-LAST:event_mSaveAsActionPerformed
 
@@ -277,6 +285,10 @@ public class GUI extends javax.swing.JFrame {
         receiptStringsArray.clear();
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void fileChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fileChooserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fileChooserActionPerformed
 
     /**
      * @param args the command line arguments
