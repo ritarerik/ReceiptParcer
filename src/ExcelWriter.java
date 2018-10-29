@@ -77,7 +77,7 @@ public class ExcelWriter {
         cell.setCellValue("Артикул");
         cell.setCellStyle(headStyle);
         
-//--------------------------------------------------------------------//
+        //--------------------------------------------------------------------//
         // заполнение строк с данными
         int rowCount = 1;
         HSSFCellStyle style = createStyleForTitle(workbook, false);
