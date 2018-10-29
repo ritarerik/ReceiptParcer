@@ -108,7 +108,7 @@ public class ExcelWriter {
                 cell.setCellStyle(style);
                 
                 // код товара
-                cell = row.createCell(5, CellType.STRING);
+                cell = row.createCell(5, CellType.STRING); 
                 cell.setCellValue(A[0]);
                 cell.setCellStyle(style);
                 
