@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -89,6 +90,7 @@ public class ExcelWriter {
         // заполнение строк с данными
         int rowCount = 1;
         HSSFCellStyle style = createStyleForTitle(workbook, false);
+        style.setDataFormat(HSSFDataFormat.getBuiltinFormat("#,##0.00"));
         for (ArrayList<String> receipt : receipts)
             for (int i = 1; i < receipt.size() - 3; i++) {
                 
