@@ -24,7 +24,7 @@ public class ReceiptProcessor {
     
     // возвращает строку, где сформированы данные по чекам без лишней информации
     // и запускает поиск продукции с нужным кодом в чеках 
-    public static String start(ArrayList<String> receiptStringsArray, String code, String path) {
+    public static String start(ArrayList<String> receiptStringsArray, String code, String path, String TT) {
         
         desiredCode = code;
         
@@ -35,7 +35,7 @@ public class ReceiptProcessor {
         receipts = parse(receiptStringsArray);
         
         if (receipts.isEmpty()) JOptionPane.showMessageDialog(null, "Ничего не найдено");
-        else ExcelWriter.write(receipts, path);
+        else ExcelWriter.write(receipts, path, TT);
         
         return printReceiptsData();    
            

@@ -20,7 +20,7 @@ import org.apache.poi.ss.usermodel.Row;
  */
 public class ExcelWriter {
     
-    public static void write(ArrayList<ArrayList<String>>receipts, String path) { // "poi-generated-file.xls"
+    public static void write(ArrayList<ArrayList<String>>receipts, String path, String TT) { // "poi-generated-file.xls"
 
         FileInputStream inputStream = null;
         HSSFWorkbook workbook = null;
@@ -97,6 +97,11 @@ public class ExcelWriter {
                 
                 String A[] = parseProductString(receipt.get(i));                
                 Row row = sheet.createRow(rowCount);
+                
+                // торговая точка
+                cell = row.createCell(0, CellType.STRING);
+                cell.setCellValue(TT);
+                cell.setCellStyle(style);
                 
                 // дата
                 cell = row.createCell(1, CellType.STRING);
