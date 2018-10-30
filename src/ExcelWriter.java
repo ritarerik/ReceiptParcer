@@ -90,7 +90,8 @@ public class ExcelWriter {
         // заполнение строк с данными
         int rowCount = 1;
         HSSFCellStyle style = createStyleForTitle(workbook, false);
-        style.setDataFormat(HSSFDataFormat.getBuiltinFormat("#,##0.00"));
+        HSSFCellStyle styleCash = createStyleForTitle(workbook, false);
+        styleCash.setDataFormat(HSSFDataFormat.getBuiltinFormat("#,##0.00"));
         for (ArrayList<String> receipt : receipts)
             for (int i = 1; i < receipt.size() - 3; i++) {
                 
@@ -115,7 +116,7 @@ public class ExcelWriter {
                 // сумма чека
                 cell = row.createCell(4, CellType.NUMERIC);
                 cell.setCellValue(Double.parseDouble(receipt.get(receipt.size() - 3)));
-                cell.setCellStyle(style);
+                cell.setCellStyle(styleCash);
                 
                 // код товара
                 cell = row.createCell(5, CellType.NUMERIC); 
@@ -130,7 +131,7 @@ public class ExcelWriter {
                 // сумма товара
                 cell = row.createCell(7, CellType.NUMERIC);
                 cell.setCellValue(Double.parseDouble(A[2]));
-                cell.setCellStyle(style);
+                cell.setCellStyle(styleCash);
                 
                 rowCount++;
                 
