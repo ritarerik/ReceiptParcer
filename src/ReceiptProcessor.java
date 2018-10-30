@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JOptionPane;
 
 
 /*
@@ -32,7 +33,9 @@ public class ReceiptProcessor {
         
         // выделяем нужную информацию по чекам и ищем нужный код
         receipts = parse(receiptStringsArray);
-        ExcelWriter.write(receipts, path);
+        
+        if (receipts.isEmpty()) JOptionPane.showMessageDialog(null, "Ничего не найдено");
+        else ExcelWriter.write(receipts, path);
         
         return printReceiptsData();    
            

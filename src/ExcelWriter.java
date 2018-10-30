@@ -3,7 +3,6 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -33,7 +32,16 @@ public class ExcelWriter {
         }
         
         int count = workbook.getNumberOfSheets() + 1;
-        HSSFSheet sheet = workbook.createSheet("Лист" + count);
+        HSSFSheet sheet = null;
+        boolean f = false;        
+        while (!f) {            
+            try {
+                sheet = workbook.createSheet("Лист" + count);
+                f = true;
+            } catch (Exception ex) {
+                count++;
+            }            
+        }
         
         //--------------------------------------------------------------------//
         // шапка файла
@@ -93,8 +101,8 @@ public class ExcelWriter {
                 cell.setCellStyle(style);
                 
                 //№ чека
-                cell = row.createCell(2, CellType.STRING);
-                cell.setCellValue(receipt.get(0));
+                cell = row.createCell(2, CellType.NUMERIC);
+                cell.setCellValue(Float.parseFloat(receipt.get(0)));
                 cell.setCellStyle(style);
                 
                 // время транзации
@@ -103,13 +111,13 @@ public class ExcelWriter {
                 cell.setCellStyle(style);
                 
                 // сумма чека
-                cell = row.createCell(4, CellType.STRING);
-                cell.setCellValue(receipt.get(receipt.size() - 3));
+                cell = row.createCell(4, CellType.NUMERIC);
+                cell.setCellValue(Double.parseDouble(receipt.get(receipt.size() - 3)));
                 cell.setCellStyle(style);
                 
                 // код товара
-                cell = row.createCell(5, CellType.STRING); 
-                cell.setCellValue(A[0]);
+                cell = row.createCell(5, CellType.NUMERIC); 
+                cell.setCellValue(Float.parseFloat(A[0]));
                 cell.setCellStyle(style);
                 
                 // товар
@@ -118,8 +126,8 @@ public class ExcelWriter {
                 cell.setCellStyle(style);
                 
                 // сумма товара
-                cell = row.createCell(7, CellType.STRING);
-                cell.setCellValue(A[2]);
+                cell = row.createCell(7, CellType.NUMERIC);
+                cell.setCellValue(Double.parseDouble(A[2]));
                 cell.setCellStyle(style);
                 
                 rowCount++;
@@ -146,7 +154,11 @@ public class ExcelWriter {
             
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Не удалось записать файл", "Ошибка", JOptionPane.ERROR_MESSAGE);
-        }
+            try {
+                workbook.close();
+            } catch (Exception ex1) {                
+            }
+        } 
         
     }
     
