@@ -24,7 +24,7 @@ public class ReceiptProcessor {
     
     // возвращает строку, где сформированы данные по чекам без лишней информации
     // и запускает поиск продукции с нужным кодом в чеках 
-    public static String start(ArrayList<String> receiptStringsArray, String code, String path, String TT) {
+    public static String start(ArrayList<String> receiptStringsArray, String code, String path, String TT, String IP) {
         
         desiredCode = code;
         
@@ -35,7 +35,7 @@ public class ReceiptProcessor {
         receipts = parse(receiptStringsArray);
         
         if (receipts.isEmpty()) JOptionPane.showMessageDialog(null, "Ничего не найдено");
-        else ExcelWriter.write(receipts, path, TT);
+        else ExcelWriter.write(receipts, path, TT, IP);
         
         return printReceiptsData();    
            
@@ -53,81 +53,89 @@ public class ReceiptProcessor {
             
             String S = receiptStringsArray.get(i);
             
-            switch (stage) {
-                // нулевая стадия -- ищем начало чека
-                case 0 : { 
-                    
-                    // пытаемся получить номер чека из строки
-                    String num = getReceiptNumber(S);
-                    
-                    if (!num.equals("NON")) {
-                        
-                        // ищу копии чека
-                        boolean f = false;
-                        for (ArrayList<String> r : receipts) {
-                            if (r.get(0).equals(num)) {
-                                f = true;
-                                break;
-                            }
-                        } 
-                        
-                        // если копий нет, то начинаем обработку нового чека
-                        if (!f) {
-                            list.clear();
-                            list.add(num);
-                            stage++;
-                        }
-                        
-                    } 
-                    
-                    break;
-                }
-                
-                // первая стадия -- считывание товаров из чека
-                case 1 : {
-                    
-                    if (!S.equals("------------------------------------------") && !S.equals("==========================================")) 
-                        productString += S + "\n";
-                    else {
-                        list.add(proccesProductString(productString));                        
-                        productString = "";
-                    }
-                    
-                    if (S.equals("==========================================")) {
-                        stage++;
-                    }
-                    
-                    break;
-                }
-                
-                // обработка строки "ИТОГО"
-                case 2 : {                    
-                    list.add(getCheckAmount(S));
-                    stage++;
-                    break;
-                }
-                
-                // обработка даты и времени, запись чека в массив
-                case 3 : {
-                    
-                    if (codeEqual) {
-                        String dataAndTime[] = getDataAndTime(S);
-                        list.add(dataAndTime[0]);
-                        list.add(dataAndTime[1]);
-
-                        ArrayList<String> listCopy = new ArrayList<>();
-                        for (String s : list) listCopy.add(s);                    
-                        receipts.add(listCopy);
-                        
-                        codeEqual = false;
-                    }
-                    
-                    stage = 0;
-                    break;
-                }
-                
+            if (S.contains("false")) {
+                stage = 0;
+                productString = "";
+                continue;
             }
             
+            if (!S.isEmpty()) {
+            
+                switch (stage) {
+                    // нулевая стадия -- ищем начало чека
+                    case 0 : { 
+
+                        // пытаемся получить номер чека из строки
+                        String num = getReceiptNumber(S);
+
+                        if (!num.equals("NON")) {
+
+                            // ищу копии чека
+                            boolean f = false;
+                            for (ArrayList<String> r : receipts) {
+                                if (r.get(0).equals(num)) {
+                                    f = true;
+                                    break;
+                                }
+                            } 
+
+                            // если копий нет, то начинаем обработку нового чека
+                            if (!f) {
+                                list.clear();
+                                list.add(num);
+                                stage++;
+                            }
+
+                        } 
+
+                        break;
+                    }
+
+                    // первая стадия -- считывание товаров из чека
+                    case 1 : {
+                        
+                        if (!S.equals("------------------------------------------") && !S.equals("==========================================")) 
+                            productString += S + "\n";                            
+                        else {
+                            list.add(proccesProductString(productString));                        
+                            productString = "";
+                        }
+
+                        if (S.equals("==========================================")) {
+                            stage++;
+                        }
+
+                        break;
+                    }
+
+                    // обработка строки "ИТОГО"
+                    case 2 : {                    
+                        list.add(getCheckAmount(S));
+                        stage++;
+                        break;
+                    }
+
+                    // обработка даты и времени, запись чека в массив
+                    case 3 : {
+
+                        if (codeEqual) {
+                            String dataAndTime[] = getDataAndTime(S);
+                            list.add(dataAndTime[0]);
+                            list.add(dataAndTime[1]);
+
+                            ArrayList<String> listCopy = new ArrayList<>();
+                            for (String s : list) listCopy.add(s);                    
+                            receipts.add(listCopy);
+
+                            codeEqual = false;
+                        }
+
+                        stage = 0;
+                        break;
+                    }
+
+                }
+            }
             
         }      
         
@@ -173,14 +181,18 @@ public class ReceiptProcessor {
         // ищем строку содержащую слово "ставка"
         int lastString = 0;
         for (int i = 0; i < strings.size(); i++) {
-            if (strings.get(i).contains("ставка")) { 
+            if (strings.get(i).contains("ставка") || strings.get(i).contains("скидка")) { 
                 lastString = i;
                 break;
             } 
         }
         
         //получаем сумму товара
+        try {
         sum = strings.get(lastString - 1);
+        } catch (Exception e) {
+            int i = 0;
+        }
         int count = 0;
         for (int i = 0; i < sum.length(); i++) 
             if (sum.charAt(i) == '.') {

@@ -20,7 +20,7 @@ import org.apache.poi.ss.usermodel.Row;
  */
 public class ExcelWriter {
     
-    public static void write(ArrayList<ArrayList<String>>receipts, String path, String TT) { // "poi-generated-file.xls"
+    public static void write(ArrayList<ArrayList<String>>receipts, String path, String TT, String IP) { // "poi-generated-file.xls"
 
         FileInputStream inputStream = null;
         HSSFWorkbook workbook = null;
@@ -55,34 +55,38 @@ public class ExcelWriter {
         cell.setCellStyle(headStyle);
         
         cell = headRow.createCell(1, CellType.STRING);
-        cell.setCellValue("Дата");
+        cell.setCellValue("IP");
         cell.setCellStyle(headStyle);
         
         cell = headRow.createCell(2, CellType.STRING);
-        cell.setCellValue("№ чека");
+        cell.setCellValue("Дата");
         cell.setCellStyle(headStyle);
         
         cell = headRow.createCell(3, CellType.STRING);
-        cell.setCellValue("Время транз.");
+        cell.setCellValue("№ чека");
         cell.setCellStyle(headStyle);
         
         cell = headRow.createCell(4, CellType.STRING);
-        cell.setCellValue("Сумма чека");
+        cell.setCellValue("Время транз.");
         cell.setCellStyle(headStyle);
         
         cell = headRow.createCell(5, CellType.STRING);
-        cell.setCellValue("Код");
+        cell.setCellValue("Сумма чека");
         cell.setCellStyle(headStyle);
         
         cell = headRow.createCell(6, CellType.STRING);
-        cell.setCellValue("Товар");
+        cell.setCellValue("Код");
         cell.setCellStyle(headStyle);
         
         cell = headRow.createCell(7, CellType.STRING);
-        cell.setCellValue("Сумма");
+        cell.setCellValue("Товар");
         cell.setCellStyle(headStyle);
         
         cell = headRow.createCell(8, CellType.STRING);
+        cell.setCellValue("Сумма");
+        cell.setCellStyle(headStyle);
+        
+        cell = headRow.createCell(9, CellType.STRING);
         cell.setCellValue("Артикул");
         cell.setCellStyle(headStyle);
         
@@ -103,38 +107,43 @@ public class ExcelWriter {
                 cell.setCellValue(TT);
                 cell.setCellStyle(style);
                 
-                // дата
+                // IP
                 cell = row.createCell(1, CellType.STRING);
+                cell.setCellValue(IP);
+                cell.setCellStyle(style);
+                
+                // дата
+                cell = row.createCell(2, CellType.STRING);
                 cell.setCellValue(receipt.get(receipt.size() - 2));
                 cell.setCellStyle(style);
                 
                 //№ чека
-                cell = row.createCell(2, CellType.NUMERIC);
+                cell = row.createCell(3, CellType.NUMERIC);
                 cell.setCellValue(Float.parseFloat(receipt.get(0)));
                 cell.setCellStyle(style);
                 
                 // время транзации
-                cell = row.createCell(3, CellType.STRING);
+                cell = row.createCell(4, CellType.STRING);
                 cell.setCellValue(receipt.get(receipt.size() - 1));
                 cell.setCellStyle(style);
                 
                 // сумма чека
-                cell = row.createCell(4, CellType.NUMERIC);
+                cell = row.createCell(5, CellType.NUMERIC);
                 cell.setCellValue(Double.parseDouble(receipt.get(receipt.size() - 3)));
                 cell.setCellStyle(styleCash);
                 
                 // код товара
-                cell = row.createCell(5, CellType.NUMERIC); 
+                cell = row.createCell(6, CellType.NUMERIC); 
                 cell.setCellValue(Float.parseFloat(A[0]));
                 cell.setCellStyle(style);
                 
                 // товар
-                cell = row.createCell(6, CellType.STRING);
+                cell = row.createCell(7, CellType.STRING);
                 cell.setCellValue(A[1]);
                 cell.setCellStyle(style);
                 
                 // сумма товара
-                cell = row.createCell(7, CellType.NUMERIC);
+                cell = row.createCell(8, CellType.NUMERIC);
                 cell.setCellValue(Double.parseDouble(A[2]));
                 cell.setCellStyle(styleCash);
                 
@@ -144,7 +153,7 @@ public class ExcelWriter {
         
         //--------------------------------------------------------------------//
         // автовыравнивание столбцов
-        for(int i = 0; i < 9; i++) {
+        for(int i = 0; i < 10; i++) {
             sheet.autoSizeColumn(i);
         }
         

@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -54,6 +56,9 @@ public class GUI extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         jLabel6 = new javax.swing.JLabel();
         textAreaTTIP = new javax.swing.JTextField();
+        jSeparator6 = new javax.swing.JSeparator();
+        jLabel9 = new javax.swing.JLabel();
+        textAreaCodeIP = new javax.swing.JTextField();
         panelFile = new javax.swing.JPanel();
         btnOpen = new javax.swing.JButton();
         btnSaveAs = new javax.swing.JButton();
@@ -64,6 +69,9 @@ public class GUI extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         textAreaTT = new javax.swing.JTextField();
         btnOK = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        textAreaIPFile = new javax.swing.JTextField();
+        jSeparator5 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         btnOpen1 = new javax.swing.JButton();
         btnSaveAsNoSearch = new javax.swing.JButton();
@@ -96,7 +104,7 @@ public class GUI extends javax.swing.JFrame {
         textAreaReceipt.setRows(5);
         jScrollPane1.setViewportView(textAreaReceipt);
 
-        tabbedPane.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
+        tabbedPane.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 16)); // NOI18N
 
         panelIP.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -104,6 +112,7 @@ public class GUI extends javax.swing.JFrame {
         jLabel4.setText("IP:");
 
         textAreaIP.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
+        textAreaIP.setText("192.168.8.34");
 
         btnOKIP.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
         btnOKIP.setText("ОК");
@@ -125,10 +134,18 @@ public class GUI extends javax.swing.JFrame {
         textAreaPathIP.setBackground(new java.awt.Color(255, 255, 255));
         textAreaPathIP.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
 
-        jLabel6.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 2, 18)); // NOI18N
         jLabel6.setText("Торговая точка:");
 
-        textAreaTTIP.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
+        textAreaTTIP.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
+
+        jSeparator6.setOrientation(javax.swing.SwingConstants.VERTICAL);
+
+        jLabel9.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
+        jLabel9.setText("Код:");
+
+        textAreaCodeIP.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
+        textAreaCodeIP.setText("6816");
 
         javax.swing.GroupLayout panelIPLayout = new javax.swing.GroupLayout(panelIP);
         panelIP.setLayout(panelIPLayout);
@@ -146,9 +163,15 @@ public class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(textAreaIP, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6)
+                        .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(textAreaTTIP, javax.swing.GroupLayout.DEFAULT_SIZE, 352, Short.MAX_VALUE)
+                        .addComponent(textAreaCodeIP, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(textAreaTTIP, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnOKIP, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator3))
@@ -164,17 +187,21 @@ public class GUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(textAreaIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOKIP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(panelIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(panelIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(textAreaIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnOKIP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel6)
-                        .addComponent(textAreaTTIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(13, 13, 13))
+                        .addComponent(textAreaTTIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelIPLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(textAreaCodeIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jSeparator6))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        tabbedPane.addTab("По IP", panelIP);
+        tabbedPane.addTab("IP", panelIP);
 
         panelFile.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -203,10 +230,10 @@ public class GUI extends javax.swing.JFrame {
 
         textAreaCode.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 2, 18)); // NOI18N
         jLabel3.setText("Торговая точка:");
 
-        textAreaTT.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
+        textAreaTT.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
 
         btnOK.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
         btnOK.setText("ОК");
@@ -215,6 +242,13 @@ public class GUI extends javax.swing.JFrame {
                 btnOKActionPerformed(evt);
             }
         });
+
+        jLabel8.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 2, 18)); // NOI18N
+        jLabel8.setText("IP:");
+
+        textAreaIPFile.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
+
+        jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         javax.swing.GroupLayout panelFileLayout = new javax.swing.GroupLayout(panelFile);
         panelFile.setLayout(panelFileLayout);
@@ -227,10 +261,16 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(textAreaCode, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(textAreaTT, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+                        .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(textAreaIPFile, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(6, 6, 6)
+                        .addComponent(textAreaTT, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -253,16 +293,20 @@ public class GUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelFileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(textAreaCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(textAreaTT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(panelFileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(panelFileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel1)
+                        .addComponent(textAreaCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3)
+                        .addComponent(textAreaTT, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnOK, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel8)
+                        .addComponent(textAreaIPFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jSeparator5))
                 .addGap(20, 20, 20))
         );
 
-        tabbedPane.addTab("Из файла", panelFile);
+        tabbedPane.addTab("Файл", panelFile);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -294,15 +338,15 @@ public class GUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 2, 18)); // NOI18N
         jLabel5.setText("Торговая точка:");
 
-        textAreaTTNoSearch.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
+        textAreaTTNoSearch.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
 
-        jLabel7.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
+        jLabel7.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 2, 18)); // NOI18N
         jLabel7.setText("IP:");
 
-        textAreaIPNoSearch.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
+        textAreaIPNoSearch.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -319,13 +363,13 @@ public class GUI extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textAreaPathNoSearch))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textAreaIPNoSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel5)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(textAreaTTNoSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textAreaTTNoSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 537, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnOKNoSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -348,7 +392,7 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(jLabel7)
                         .addComponent(textAreaIPNoSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab("Парсер без поиска", jPanel1);
@@ -474,7 +518,7 @@ public class GUI extends javax.swing.JFrame {
         else if (!numeric) 
             JOptionPane.showMessageDialog(null, "Код должен являться числом", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else 
-            textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCode.getText(), textAreaPath.getText(), textAreaTT.getText(), ""));
+            textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCode.getText(), textAreaPath.getText(), textAreaTT.getText(), textAreaIPFile.getText()));
         
         btnOK.setEnabled(true);
     }//GEN-LAST:event_btnOKActionPerformed
@@ -502,7 +546,19 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void btnOKIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOKIPActionPerformed
-        // TODO add your handling code here:
+        btnOKNoSearch.setEnabled(false); 
+        if (textAreaPathIP.getText().isEmpty() || textAreaCodeIP.getText().isEmpty() || textAreaIP.getText().isEmpty())
+            JOptionPane.showMessageDialog(null, "Пожалуйста, введите все данные", "Ошибка", JOptionPane.ERROR_MESSAGE);
+        else {           
+            Pattern p = Pattern.compile("\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}");  
+            Matcher m = p.matcher(textAreaIP.getText()); 
+            if (m.matches()) {
+                receiptStringsArray = IPFileOpener.run(textAreaIP.getText());
+                if (receiptStringsArray.isEmpty()) JOptionPane.showMessageDialog(null, "Не удалось считать данные из папки '\\\\" + textAreaIP.getText()+ "\\Tranz'", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                    else textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCodeIP.getText(), textAreaPathIP.getText(), textAreaTTIP.getText(), textAreaIP.getText()));
+            } else JOptionPane.showMessageDialog(null, "Неправильно введён IP-адрес", "Ошибка", JOptionPane.ERROR_MESSAGE); 
+        }
+        btnOKNoSearch.setEnabled(true);        
     }//GEN-LAST:event_btnOKIPActionPerformed
 
     private void mbtnSaveAsIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mbtnSaveAsIPActionPerformed
@@ -589,6 +645,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
@@ -597,6 +655,8 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
     private javax.swing.JMenuItem mExit;
     private javax.swing.JMenuItem mOpen;
     private javax.swing.JMenuItem mSaveAs;
@@ -606,7 +666,9 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel panelIP;
     private javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JTextField textAreaCode;
+    private javax.swing.JTextField textAreaCodeIP;
     private javax.swing.JTextField textAreaIP;
+    private javax.swing.JTextField textAreaIPFile;
     private javax.swing.JTextField textAreaIPNoSearch;
     private javax.swing.JTextField textAreaPath;
     private javax.swing.JTextField textAreaPathIP;
