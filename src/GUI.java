@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.swing.JFileChooser;
@@ -589,9 +590,20 @@ public class GUI extends javax.swing.JFrame {
     
     private boolean checkIP(String S) {
         
+        int count = 0;
+        StringTokenizer st = new StringTokenizer(S, ".");
+        while (st.hasMoreTokens()) { 
+            String s = st.nextToken();
+            count++;
+            if (count > 4) return false;            
+            try {
+                Integer.parseInt(s);
+            } catch (Exception e) {
+                return false;                
+            }            
+        }
         
-        
-        return true;
+        return count == 4;
     }
     
     /**
