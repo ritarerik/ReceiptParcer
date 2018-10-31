@@ -84,9 +84,6 @@ public class GUI extends javax.swing.JFrame {
         textAreaIPNoSearch = new javax.swing.JTextField();
         menuBar = new javax.swing.JMenuBar();
         mainMenu = new javax.swing.JMenu();
-        mOpen = new javax.swing.JMenuItem();
-        mSaveAs = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         mExit = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -400,28 +397,6 @@ public class GUI extends javax.swing.JFrame {
         mainMenu.setText("Файл");
         mainMenu.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
 
-        mOpen.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.event.InputEvent.CTRL_MASK));
-        mOpen.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
-        mOpen.setText("Открыть...");
-        mOpen.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mOpenActionPerformed(evt);
-            }
-        });
-        mainMenu.add(mOpen);
-
-        mSaveAs.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_MASK));
-        mSaveAs.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
-        mSaveAs.setText("Сохранить как...");
-        mSaveAs.setToolTipText("");
-        mSaveAs.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mbtnSaveAsActionPerformed(evt);
-            }
-        });
-        mainMenu.add(mSaveAs);
-        mainMenu.add(jSeparator1);
-
         mExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F4, java.awt.event.InputEvent.ALT_MASK));
         mExit.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 14)); // NOI18N
         mExit.setText("Выход");
@@ -517,6 +492,8 @@ public class GUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Пожалуйста, введите все данные", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else if (!numeric) 
             JOptionPane.showMessageDialog(null, "Код должен являться числом", "Ошибка", JOptionPane.ERROR_MESSAGE);
+        else if (!checkIP(textAreaIPFile.getText().replaceAll(".", "|")))
+            JOptionPane.showMessageDialog(null, "Неправильно введён IP-адрес", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else 
             textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCode.getText(), textAreaPath.getText(), textAreaTT.getText(), textAreaIPFile.getText()));
         
@@ -533,15 +510,14 @@ public class GUI extends javax.swing.JFrame {
         textAreaCode.setText("");
         textAreaReceipt.setText("");
         textAreaTT.setText("");
-        
+        textAreaCodeIP.setText("");
         textAreaPathIP.setText("");
         textAreaIP.setText("");
         textAreaTTIP.setText("");
-        
+        textAreaIPFile.setText("");        
         textAreaPathNoSearch.setText("");
         textAreaTTNoSearch.setText("");
-        textAreaIPNoSearch.setText("");
-        
+        textAreaIPNoSearch.setText("");        
         receiptStringsArray.clear();        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -550,9 +526,10 @@ public class GUI extends javax.swing.JFrame {
         if (textAreaPathIP.getText().isEmpty() || textAreaCodeIP.getText().isEmpty() || textAreaIP.getText().isEmpty())
             JOptionPane.showMessageDialog(null, "Пожалуйста, введите все данные", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else {           
-            Pattern p = Pattern.compile("\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}");  
-            Matcher m = p.matcher(textAreaIP.getText()); 
-            if (m.matches()) {
+//            Pattern p = Pattern.compile("\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}");  
+//            Matcher m = p.matcher(textAreaIP.getText()); 
+//            if (m.matches()) {
+            if (checkIP(textAreaIP.getText().replaceAll(".", "|"))) {
                 receiptStringsArray = IPFileOpener.run(textAreaIP.getText());
                 if (receiptStringsArray.isEmpty()) JOptionPane.showMessageDialog(null, "Не удалось считать данные из папки '\\\\" + textAreaIP.getText()+ "\\Tranz'", "Ошибка", JOptionPane.ERROR_MESSAGE);
                     else textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCodeIP.getText(), textAreaPathIP.getText(), textAreaTTIP.getText(), textAreaIP.getText()));
@@ -574,6 +551,8 @@ public class GUI extends javax.swing.JFrame {
                 
         if (receiptStringsArray.isEmpty() || textAreaPathNoSearch.getText().isEmpty())
             JOptionPane.showMessageDialog(null, "Пожалуйста, введите все данные", "Ошибка", JOptionPane.ERROR_MESSAGE);
+        else if (!checkIP(textAreaIPNoSearch.getText().replaceAll(".", "|")))
+            JOptionPane.showMessageDialog(null, "Неправильно введён IP-адрес", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else 
             textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, "NON", textAreaPathNoSearch.getText(), textAreaTTNoSearch.getText(), textAreaIPNoSearch.getText()));
         
@@ -591,6 +570,12 @@ public class GUI extends javax.swing.JFrame {
             if (!path.endsWith(".xls")) path += ".xls";            
             ta.setText(path);            
         }
+    }
+    
+    private boolean checkIP(String S) {
+        Pattern p = Pattern.compile("\\d{1,3}|\\d{1,3}|\\d{1,3}|\\d{1,3}");  
+        Matcher m = p.matcher(textAreaIP.getText()); 
+        return m.matches();
     }
     
     /**
@@ -651,15 +636,12 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JMenuItem mExit;
-    private javax.swing.JMenuItem mOpen;
-    private javax.swing.JMenuItem mSaveAs;
     private javax.swing.JMenu mainMenu;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JPanel panelFile;
