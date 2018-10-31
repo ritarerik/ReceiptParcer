@@ -202,9 +202,12 @@
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="textAreaIP" min="-2" pref="183" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="textAreaTTIP" pref="352" max="32767" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnOKIP" min="-2" pref="66" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="525" max="32767" attributes="0"/>
                           </Group>
                           <Component id="jSeparator3" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -227,6 +230,10 @@
                           <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="textAreaIP" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnOKIP" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                              <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="textAreaTTIP" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
                   </Group>
@@ -283,6 +290,21 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JSeparator" name="jSeparator3">
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel6">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Microsoft JhengHei UI Light" size="18" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="&#x422;&#x43e;&#x440;&#x433;&#x43e;&#x432;&#x430;&#x44f; &#x442;&#x43e;&#x447;&#x43a;&#x430;:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="textAreaTTIP">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Microsoft JhengHei UI Light" size="18" style="1"/>
+                </Property>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>
@@ -463,12 +485,16 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnSaveAsNoSearch" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="textAreaPathNoSearch" pref="569" max="32767" attributes="0"/>
+                              <Component id="textAreaPathNoSearch" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
+                              <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="textAreaIPNoSearch" min="-2" pref="183" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="textAreaTTNoSearch" max="32767" attributes="0"/>
+                              <Component id="textAreaTTNoSearch" min="-2" pref="352" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="btnOKNoSearch" min="-2" pref="66" max="-2" attributes="0"/>
                           </Group>
@@ -490,9 +516,13 @@
                       <Component id="jSeparator4" min="-2" pref="10" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="textAreaTTNoSearch" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btnOKNoSearch" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                              <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="textAreaIPNoSearch" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                       <EmptySpace pref="19" max="32767" attributes="0"/>
                   </Group>
@@ -555,6 +585,21 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="textAreaTTNoSearch">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Microsoft JhengHei UI Light" size="18" style="1"/>
+                </Property>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="jLabel7">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Microsoft JhengHei UI Light" size="18" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="IP:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JTextField" name="textAreaIPNoSearch">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft JhengHei UI Light" size="18" style="1"/>
