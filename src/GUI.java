@@ -453,25 +453,42 @@ public class GUI extends javax.swing.JFrame {
 
     private void mOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mOpenActionPerformed
         fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         fileChooser.setFileFilter(new CustomFilter());
         fileChooser.setDialogTitle("Открыть");
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             
             File file = fileChooser.getSelectedFile();
+            if (!file.isDirectory()) {
             
-            try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file.getAbsolutePath()), "UTF-8"));
+                try {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file.getAbsolutePath()), "UTF-8"));
 
-                receiptStringsArray.clear();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (!line.isEmpty()) receiptStringsArray.add(line);
-                }            
+                    receiptStringsArray.clear();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        if (!line.isEmpty()) receiptStringsArray.add(line);
+                    }            
 
-                reader.close();
-            } catch (IOException ex) {
-                JOptionPane.showMessageDialog(null, "Ошибка при открытии файла", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                    reader.close();
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Ошибка при открытии файла " + file.getName(), "Ошибка", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                
+                for (File item: file.listFiles()) {                    
+                    try {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(item.getAbsolutePath()), "UTF-8"));
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            if (!line.isEmpty()) receiptStringsArray.add(line);
+                        } 
+                        reader.close();
+                    } catch (Exception ex) { 
+                        JOptionPane.showMessageDialog(null, "Не удалось открыть файл " + item.getName(), "Ошибка", JOptionPane.ERROR_MESSAGE);
+                    }                      
+                }                
             }
             
             this.setTitle("Receipt Parser - [" + file.getAbsolutePath() + "]");
@@ -492,7 +509,7 @@ public class GUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Пожалуйста, введите все данные", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else if (!numeric) 
             JOptionPane.showMessageDialog(null, "Код должен являться числом", "Ошибка", JOptionPane.ERROR_MESSAGE);
-        else if (!checkIP(textAreaIPFile.getText().replaceAll(".", "|")))
+        else if (!textAreaIPFile.getText().isEmpty() && !checkIP(textAreaIPFile.getText()))
             JOptionPane.showMessageDialog(null, "Неправильно введён IP-адрес", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else 
             textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCode.getText(), textAreaPath.getText(), textAreaTT.getText(), textAreaIPFile.getText()));
@@ -526,10 +543,7 @@ public class GUI extends javax.swing.JFrame {
         if (textAreaPathIP.getText().isEmpty() || textAreaCodeIP.getText().isEmpty() || textAreaIP.getText().isEmpty())
             JOptionPane.showMessageDialog(null, "Пожалуйста, введите все данные", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else {           
-//            Pattern p = Pattern.compile("\\d{1,3}.\\d{1,3}.\\d{1,3}.\\d{1,3}");  
-//            Matcher m = p.matcher(textAreaIP.getText()); 
-//            if (m.matches()) {
-            if (checkIP(textAreaIP.getText().replaceAll(".", "|"))) {
+            if (checkIP(textAreaIP.getText())) {
                 receiptStringsArray = IPFileOpener.run(textAreaIP.getText());
                 if (receiptStringsArray.isEmpty()) JOptionPane.showMessageDialog(null, "Не удалось считать данные из папки '\\\\" + textAreaIP.getText()+ "\\Tranz'", "Ошибка", JOptionPane.ERROR_MESSAGE);
                     else textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCodeIP.getText(), textAreaPathIP.getText(), textAreaTTIP.getText(), textAreaIP.getText()));
@@ -551,7 +565,7 @@ public class GUI extends javax.swing.JFrame {
                 
         if (receiptStringsArray.isEmpty() || textAreaPathNoSearch.getText().isEmpty())
             JOptionPane.showMessageDialog(null, "Пожалуйста, введите все данные", "Ошибка", JOptionPane.ERROR_MESSAGE);
-        else if (!checkIP(textAreaIPNoSearch.getText().replaceAll(".", "|")))
+        else if (!textAreaIPNoSearch.getText().isEmpty() && !checkIP(textAreaIPNoSearch.getText()))
             JOptionPane.showMessageDialog(null, "Неправильно введён IP-адрес", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else 
             textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, "NON", textAreaPathNoSearch.getText(), textAreaTTNoSearch.getText(), textAreaIPNoSearch.getText()));
@@ -560,7 +574,8 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_btnOKNoSearchActionPerformed
     
     private void saveActionPerfomed(JTextField ta) {
-        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG); 
+        fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         fileChooser.setFileFilter(new CustomFilterXLS());
         fileChooser.setDialogTitle("Сохранение");
         int returnVal = fileChooser.showOpenDialog(this);
@@ -573,9 +588,10 @@ public class GUI extends javax.swing.JFrame {
     }
     
     private boolean checkIP(String S) {
-        Pattern p = Pattern.compile("\\d{1,3}|\\d{1,3}|\\d{1,3}|\\d{1,3}");  
-        Matcher m = p.matcher(textAreaIP.getText()); 
-        return m.matches();
+        
+        
+        
+        return true;
     }
     
     /**

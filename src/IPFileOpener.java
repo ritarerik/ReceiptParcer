@@ -37,7 +37,8 @@ public class IPFileOpener {
                         }          
 
                         reader.close();
-                    } catch (Exception ex) {                        
+                    } catch (Exception ex) {  
+                        JOptionPane.showMessageDialog(null, "Не удалось открыть файл " + file.getName(), "Ошибка", JOptionPane.ERROR_MESSAGE);
                     }                     
                      
                  }

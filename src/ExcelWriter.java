@@ -32,7 +32,8 @@ public class ExcelWriter {
             workbook = new HSSFWorkbook();
         }
         
-        int count = workbook.getNumberOfSheets() + 1;
+//        int count = workbook.getNumberOfSheets() + 1;
+        int count = 1;
         HSSFSheet sheet = null;
         boolean f = false;        
         while (!f) {            
