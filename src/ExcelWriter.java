@@ -119,9 +119,15 @@ public class ExcelWriter {
                 cell.setCellStyle(style);
                 
                 //№ чека
-                cell = row.createCell(3, CellType.NUMERIC);
-                cell.setCellValue(Float.parseFloat(receipt.get(0)));
-                cell.setCellStyle(style);
+                try {
+                    cell = row.createCell(3, CellType.NUMERIC);
+                    cell.setCellValue(Float.parseFloat(receipt.get(0)));
+                    cell.setCellStyle(style);
+                } catch (Exception e) {
+                    cell = row.createCell(3, CellType.STRING);
+                    cell.setCellValue(receipt.get(0));
+                    cell.setCellStyle(style);
+                }
                 
                 // время транзации
                 cell = row.createCell(4, CellType.STRING);
@@ -129,14 +135,26 @@ public class ExcelWriter {
                 cell.setCellStyle(style);
                 
                 // сумма чека
-                cell = row.createCell(5, CellType.NUMERIC);
-                cell.setCellValue(Double.parseDouble(receipt.get(receipt.size() - 3)));
-                cell.setCellStyle(styleCash);
+                try {
+                    cell = row.createCell(5, CellType.NUMERIC);
+                    cell.setCellValue(Double.parseDouble(receipt.get(receipt.size() - 3)));
+                    cell.setCellStyle(styleCash);
+                } catch (Exception e) {
+                    cell = row.createCell(5, CellType.STRING);
+                    cell.setCellValue(receipt.get(receipt.size() - 3));
+                    cell.setCellStyle(styleCash);
+                }
                 
                 // код товара
-                cell = row.createCell(6, CellType.NUMERIC); 
-                cell.setCellValue(Float.parseFloat(A[0]));
-                cell.setCellStyle(style);
+                try {
+                    cell = row.createCell(6, CellType.NUMERIC); 
+                    cell.setCellValue(Float.parseFloat(A[0]));
+                    cell.setCellStyle(style);
+                } catch (Exception e) {
+                    cell = row.createCell(6, CellType.STRING); 
+                    cell.setCellValue(A[0]);
+                    cell.setCellStyle(style);
+                }
                 
                 // товар
                 cell = row.createCell(7, CellType.STRING);
@@ -144,9 +162,15 @@ public class ExcelWriter {
                 cell.setCellStyle(style);
                 
                 // сумма товара
-                cell = row.createCell(8, CellType.NUMERIC);
-                cell.setCellValue(Double.parseDouble(A[2]));
-                cell.setCellStyle(styleCash);
+                try {
+                    cell = row.createCell(8, CellType.NUMERIC);
+                    cell.setCellValue(Double.parseDouble(A[2]));
+                    cell.setCellStyle(styleCash);
+                } catch (Exception e) {
+                    cell = row.createCell(8, CellType.STRING);
+                    cell.setCellValue(A[2]);
+                    cell.setCellStyle(styleCash);
+                }
                 
                 rowCount++;
                 
