@@ -181,7 +181,7 @@ public class ReceiptProcessor {
         // ищем строку содержащую слово "ставка"
         int lastString = 0;
         for (int i = 0; i < strings.size(); i++) {
-            if (strings.get(i).contains("ставка") || strings.get(i).contains("скидка")) { 
+            if (strings.get(i).contains("ставка") || strings.get(i).contains("скидка") || strings.get(i).contains("скидака")) {  // Скидака
                 lastString = i;
                 break;
             } 
@@ -225,8 +225,8 @@ public class ReceiptProcessor {
 
                 case 0 : {  
                     
-                    if (c == '(') a = i + 1;
-                    else if (c == ')') {
+                    if (c == '(' || c == '{' || c == '\'') a = i + 1;
+                    else if (c == ')' || c == '}' || c == '\'') {
                         b = i;
                         code = codeAndProduct.substring(a, b);                        
                         if (desiredCode.equals("NON") || code.equals(desiredCode)) codeEqual = true;
