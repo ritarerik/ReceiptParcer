@@ -216,7 +216,7 @@ public class ReceiptProcessor {
         // получение кода и продукта отдельно
         int stage = 0,
             a = 0, b = 0; 
-        boolean end = false;
+        boolean end = false, codeFind = false;
         for (int i = 0; i < codeAndProduct.length(); i++) {
             
             char c = codeAndProduct.charAt(i);
@@ -230,7 +230,12 @@ public class ReceiptProcessor {
                         b = i;
                         code = codeAndProduct.substring(a, b);                        
                         if (desiredCode.equals("NON") || code.equals(desiredCode)) codeEqual = true;
+                        codeFind = true;
                         stage++;
+                    }
+                    
+                    if (!codeFind) {
+                        
                     }
 
                     break;
