@@ -544,6 +544,7 @@ public class GUI extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Пожалуйста, введите все данные", "Ошибка", JOptionPane.ERROR_MESSAGE);
         else {           
             if (checkIP(textAreaIP.getText())) {
+                receiptStringsArray.clear();
                 receiptStringsArray = IPFileOpener.run(textAreaIP.getText());
                 if (receiptStringsArray.isEmpty()) JOptionPane.showMessageDialog(null, "Не удалось считать данные из папки '\\\\" + textAreaIP.getText()+ "\\Tranz'", "Ошибка", JOptionPane.ERROR_MESSAGE);
                     else textAreaReceipt.setText(ReceiptProcessor.start(receiptStringsArray, textAreaCodeIP.getText(), textAreaPathIP.getText(), textAreaTTIP.getText(), textAreaIP.getText()));

@@ -53,8 +53,7 @@ public class ReceiptProcessor {
         
         // режим обработки зависит от вида чиков, 
         // главное их различие -- в длине строки, остальные тонкости
-        // учитываются по ходу дела
-        
+        // учитываются по ходу дела        
         for (int i = 0; i < receiptStringsArray.size(); i++) 
             if (receiptStringsArray.get(i).contains("чек №")) {
                 if (receiptStringsArray.get(i).length() > 44) processMode = 2;
