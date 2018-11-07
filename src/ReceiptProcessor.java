@@ -38,7 +38,7 @@ public class ReceiptProcessor {
         if (receipts.isEmpty()) JOptionPane.showMessageDialog(null, "Ничего не найдено");
         else ExcelWriter.write(receipts, path, TT, IP);
         
-        return printReceiptsData();    
+        return printReceiptsData();
            
     }
     
@@ -57,7 +57,7 @@ public class ReceiptProcessor {
         
         for (int i = 0; i < receiptStringsArray.size(); i++) 
             if (receiptStringsArray.get(i).contains("чек №")) {
-                if (receiptStringsArray.get(i).length() > 42) processMode = 2;
+                if (receiptStringsArray.get(i).length() > 44) processMode = 2;
                     else processMode = 1;
                 break;
             }
@@ -385,11 +385,11 @@ public class ReceiptProcessor {
     
     private static String[] divideString(String S) {
         
-        String result[] = new String[3];        
+        String result[] = new String[4];        
         int index = 0;
             StringTokenizer st = new StringTokenizer(S, "|");
             while (st.hasMoreTokens()) {                
-                if (index < 3) {
+                if (index < 4) {
                     result[index] = st.nextToken();
                     index++;
                 }       
@@ -415,7 +415,7 @@ public class ReceiptProcessor {
                     result += ("  > " + receipt.get(i) + "\n");
                 else {                                                          // строки с товарами
                     String parts[] = divideString(receipt.get(i));                    
-                    result += ("      (" + parts[0] + ") " + parts[1] + " [" + parts[2] + "]\n");
+                    result += ("      (" + parts[0] + ") " + parts[1] + " [" + parts[3] + " * " + parts[2] + "]\n");
                 }
             }
             
