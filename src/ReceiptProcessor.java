@@ -21,6 +21,7 @@ public class ReceiptProcessor {
     private static String desiredCode = "";                                     // искомый код
     private static boolean codeEqual = false;                                   // флаг совпадения кодов
     private static ArrayList<ArrayList<String>> receipts = new ArrayList<>();   // массив чеков
+    private static int processMode = 0;                                         // режим обработки
     
     // возвращает строку, где сформированы данные по чекам без лишней информации
     // и запускает поиск продукции с нужным кодом в чеках 
@@ -48,10 +49,22 @@ public class ReceiptProcessor {
         ArrayList<ArrayList<String>> receipts = new ArrayList<>();
         ArrayList<String> list = new ArrayList<>();
         String productString = "";
+        int stringCounter = 0;
+        
+        // режим обработки зависит от вида чиков, 
+        // главное их различие -- в длине строки, остальные тонкости
+        // учитываются по ходу дела
+        
+        for (int i = 0; i < receiptStringsArray.size(); i++) 
+            if (receiptStringsArray.get(i).contains("чек №")) {
+                if (receiptStringsArray.get(i).length() > 42) processMode = 2;
+                    else processMode = 1;
+                break;
+            }
         
         for (int i = 0; i < receiptStringsArray.size(); i++) {
             
-            String S = receiptStringsArray.get(i);
+            String S = receiptStringsArray.get(i).trim();
             
             if (S.contains("false")) {
                 stage = 0;
@@ -59,12 +72,16 @@ public class ReceiptProcessor {
                 continue;
             }
             
+            if (S.contains("кассир")) continue;
+            
             if (!S.isEmpty()) {
             
                 switch (stage) {
                     // нулевая стадия -- ищем начало чека
                     case 0 : { 
-
+                        
+                        stringCounter = 0;
+                        
                         // пытаемся получить номер чека из строки
                         String num = getReceiptNumber(S);
 
@@ -94,14 +111,18 @@ public class ReceiptProcessor {
                     // первая стадия -- считывание товаров из чека
                     case 1 : {
                         
-                        if (!S.equals("------------------------------------------") && !S.equals("==========================================")) 
-                            productString += S + "\n";                            
-                        else {
-                            list.add(proccesProductString(productString));                        
+//                        if (!S.equals("------------------------------------------") && !S.equals("==========================================")) {
+                        if (!isProductDelimiter(S, '-') && !isProductDelimiter(S, '=')) {
+                            productString += S + "\n"; 
+                            stringCounter++;
+                        } else {
+                            if (stringCounter > 2) list.add(proccesProductString(productString));                        
                             productString = "";
                         }
 
-                        if (S.equals("==========================================")) {
+//                        if (S.equals("==========================================")) {
+                        if (isProductDelimiter(S, '=')) {
+                            stringCounter = 0;
                             stage++;
                         }
 
@@ -118,7 +139,8 @@ public class ReceiptProcessor {
                     // обработка даты и времени, запись чека в массив
                     case 3 : {
 
-                        if (codeEqual) {
+                        if (codeEqual && !S.contains("продавец")) {
+                            
                             String dataAndTime[] = getDataAndTime(S);
                             list.add(dataAndTime[0]);
                             list.add(dataAndTime[1]);
@@ -129,8 +151,8 @@ public class ReceiptProcessor {
 
                             codeEqual = false;
                         }
-
-                        stage = 0;
+                        
+                        if (!S.contains("продавец")) stage = 0;
                         break;
                     }
 
@@ -166,7 +188,8 @@ public class ReceiptProcessor {
         
         String code     = "", // код
                product  = "", // название продукта
-               sum      = ""; // сумма
+               sum      = "",
+               number   = ""; // сумма
         
         ArrayList<String> strings = new ArrayList<>();
         
@@ -178,85 +201,127 @@ public class ReceiptProcessor {
             strings.add(st.nextToken());
         }
         
-        // ищем строку содержащую слово "ставка"
-        int lastString = 0;
-        for (int i = 0; i < strings.size(); i++) {
-            if (strings.get(i).contains("ставка") || strings.get(i).contains("скидка") || strings.get(i).contains("скидака")) {  // Скидака
-                lastString = i;
-                break;
-            } 
-        }
-        
-        //получаем сумму товара
-        try {
-        sum = strings.get(lastString - 1);
-        } catch (Exception e) {
-            int i = 0;
-        }
-        int count = 0;
-        for (int i = 0; i < sum.length(); i++) 
-            if (sum.charAt(i) == '.') {
-                count++;
-                if (count > 2) {                    
-                    for (int j = i; j < sum.length(); j++)
-                        if (isDigit(sum.charAt(j))) { 
-                            sum = sum.substring(j);
+        switch (processMode) {
+            
+            case 1 : {
+                
+                // ищем строку содержащую слово "ставка"
+                int lastString = 0;
+                for (int i = 0; i < strings.size(); i++) {
+                    if (strings.get(i).contains("ставка") || strings.get(i).contains("скидка") || strings.get(i).contains("скидака")) {  // Скидака
+                        lastString = i;
+                        break;
+                    } 
+                }
+
+                boolean f = false;
+                int index = 0;
+                while (!f)
+                    try {
+                        sum = strings.get(lastString - index);
+                        number = strings.get(lastString - index);
+
+                        // количество товара
+                        int indexOfDelimiter = number.indexOf("*");
+                        number = number.substring(0, indexOfDelimiter);
+                        number = number.trim();
+
+                        f = true;
+                    } catch (Exception e) {
+                        index++;                
+                    }
+
+                //получаем сумму товара
+                int count = 0;
+                for (int i = 0; i < sum.length(); i++) 
+                    if (sum.charAt(i) == '.') {
+                        count++;
+                        if (count > 2) {                    
+                            for (int j = i; j < sum.length(); j++)
+                                if (isDigit(sum.charAt(j))) { 
+                                    sum = sum.substring(j);
+                                    break;
+                                }                    
+                            break;                    
+                        }
+                    }
+
+                // получаем строку, содержащую код и наименование товара 
+                String codeAndProduct = "";
+                for (int i = 0; i < lastString - index; i++) {
+                    codeAndProduct += strings.get(i);
+                }
+
+                // получение кода и продукта отдельно
+                int stage = 0,
+                    a = 0, b = 0; 
+                boolean end = false;
+                for (int i = 0; i < codeAndProduct.length(); i++) {
+
+                    char c = codeAndProduct.charAt(i);
+
+                    switch (stage) {
+
+                        case 0 : {  
+
+                            if (c == '(' || c == '{' || c == '\'') a = i + 1;
+                            else if (c == ')' || c == '}' || c == '\'') {
+                                b = i;
+                                code = codeAndProduct.substring(a, b);                        
+                                if (desiredCode.equals("NON") || code.equals(desiredCode)) codeEqual = true;
+                                stage++;
+                            }
+
                             break;
-                        }                    
-                    break;                    
-                }
-            }
-        
-        // получаем строку, содержащую код и наименование товара 
-        String codeAndProduct = "";
-        for (int i = 0; i < lastString - 1; i++) {
-            codeAndProduct += strings.get(i);
-        }
-        
-        // получение кода и продукта отдельно
-        int stage = 0,
-            a = 0, b = 0; 
-        boolean end = false, codeFind = false;
-        for (int i = 0; i < codeAndProduct.length(); i++) {
-            
-            char c = codeAndProduct.charAt(i);
-            
-            switch (stage) {
+                        }
 
-                case 0 : {  
+                        case 1 : {
+
+                            product = codeAndProduct.substring(b + 1);
+                            product = product.trim();
+                            product = deleteExtraDelimiters(product);
+                            end = true;
+
+                            break;
+                        }
+
+                    }
+                    if (end) break; 
+                }                
+                
+                break;
+            }
+            
+            case 2: {
+                
+                int codeString = 0;
+                for (int i = 0; i < strings.size(); i++) {
                     
-                    if (c == '(' || c == '{' || c == '\'') a = i + 1;
-                    else if (c == ')' || c == '}' || c == '\'') {
-                        b = i;
-                        code = codeAndProduct.substring(a, b);                        
+                    String s = strings.get(i);
+                    
+                    if (s.contains("код")) {
+                        codeString = i;
+                        code = getProductSum(strings.get(i));
+                        int index = code.indexOf(" ");
+                        code = code.substring(index).trim();
                         if (desiredCode.equals("NON") || code.equals(desiredCode)) codeEqual = true;
-                        codeFind = true;
-                        stage++;
-                    }
+                    } else if (s.contains("всего")) 
+                        sum = getProductSum(strings.get(i));
+                    else if (s.contains("количество"))
+                        number = getProductSum(strings.get(i));
                     
-                    if (!codeFind) {
-                        
-                    }
-
-                    break;
                 }
-
-                case 1 : {
-                    
-                    product = codeAndProduct.substring(b + 1);
-                    product = product.trim();
-                    product = deleteExtraDelimiters(product);
-                    end = true;
-                    
-                    break;
-                }
-
-
+                
+                for (int i = 0; i < codeString; i++) product += strings.get(i);
+                int index = product.indexOf(".");
+                product = product.substring(index + 1).trim();
+                product = deleteExtraDelimiters(product);
+                
             }
-            if (end) break; 
+            
         }
         
-        return code + "|" + product + "|" + sum; 
+        return code + "|" + product + "|" + sum + "|" + number; 
         
     }
     
@@ -265,7 +330,7 @@ public class ReceiptProcessor {
     }
     
     private static boolean isSpace(char c) {
-        return " ".indexOf(c) != -1;
+        return "    ".indexOf(c) != -1;
     }
     
     private static String deleteExtraDelimiters(String S) {
@@ -279,6 +344,12 @@ public class ReceiptProcessor {
             i++;
         }
         
+//        int index = 0;
+//        for (i = newS.length() - 1; i > 0; i--) {
+//            if (newS.charAt(i) == '.' && newS.charAt(i - 1) == '.') index = i - 1;
+//        } 
+        
+//        newS = newS.substring(0, index);        
         return newS;
         
     }
@@ -356,4 +427,29 @@ public class ReceiptProcessor {
         
     }
     
+    private static boolean isProductDelimiter(String S, char c) {        
+        for (int i = 0; i < S.length(); i++) 
+            if (S.charAt(i) != c) return false;  
+        return true;        
+    }
+    
+    private static String getProductSum(String s) {
+        
+        int count = 0;
+        for (int i = s.length() - 1; i >= 0; i--) 
+            if (s.charAt(i) == '.') {
+                count++;
+                if (count > 2) {                    
+                    for (int j = i; j < s.length(); j++)
+                        if (isDigit(s.charAt(j))) { 
+                            s = s.substring(j);
+                            break;
+                        }                    
+                    break;                    
+                }
+            }
+        
+        return s;
+        
+    }
 }

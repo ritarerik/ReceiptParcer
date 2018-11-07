@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
@@ -84,10 +85,14 @@ public class ExcelWriter {
         cell.setCellStyle(headStyle);
         
         cell = headRow.createCell(8, CellType.STRING);
-        cell.setCellValue("Сумма");
+        cell.setCellValue("Количество");
         cell.setCellStyle(headStyle);
         
         cell = headRow.createCell(9, CellType.STRING);
+        cell.setCellValue("Сумма");
+        cell.setCellStyle(headStyle);
+        
+        cell = headRow.createCell(10, CellType.STRING);
         cell.setCellValue("Артикул");
         cell.setCellStyle(headStyle);
         
@@ -161,13 +166,24 @@ public class ExcelWriter {
                 cell.setCellValue(A[1]);
                 cell.setCellStyle(style);
                 
-                // сумма товара
+                // количество
                 try {
                     cell = row.createCell(8, CellType.NUMERIC);
-                    cell.setCellValue(Double.parseDouble(A[2]));
+                    cell.setCellValue(Double.parseDouble(A[3]));
                     cell.setCellStyle(styleCash);
                 } catch (Exception e) {
                     cell = row.createCell(8, CellType.STRING);
+                    cell.setCellValue(A[3]);
+                    cell.setCellStyle(styleCash);
+                }
+                
+                // сумма товара
+                try {
+                    cell = row.createCell(9, CellType.NUMERIC);
+                    cell.setCellValue(Double.parseDouble(A[2]));
+                    cell.setCellStyle(styleCash);
+                } catch (Exception e) {
+                    cell = row.createCell(9, CellType.STRING);
                     cell.setCellValue(A[2]);
                     cell.setCellStyle(styleCash);
                 }
@@ -216,17 +232,24 @@ public class ExcelWriter {
     
     private static String[] parseProductString(String S) {
         
-        String result[] = new String[3];
+        String result[] = new String[4];
         
-        int index = S.indexOf('|');
+//        int index = S.indexOf('|');
+//        
+//        result[0] = S.substring(0, index);
+//        
+//        String tmpS = S.substring(index + 1);
+//        index = tmpS.indexOf('|');
+//        
+//        result[1] = tmpS.substring(0, index);
+//        result[2] = tmpS.substring(index + 1);
         
-        result[0] = S.substring(0, index);
-        
-        String tmpS = S.substring(index + 1);
-        index = tmpS.indexOf('|');
-        
-        result[1] = tmpS.substring(0, index);
-        result[2] = tmpS.substring(index + 1);
+        int index = 0;
+        StringTokenizer st = new StringTokenizer(S, "|");
+        while (st.hasMoreTokens()) {
+            result[index] = st.nextToken();
+            index++;
+        }
         
         
         return result;
